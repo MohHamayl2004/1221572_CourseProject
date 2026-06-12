@@ -1,5 +1,6 @@
 package mohammad.example.courseproject_1221572;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -63,16 +64,17 @@ public class IntroActivity extends AppCompatActivity {
     public void connectionSuccess(List<Event> events) {
         setButtonText("Connected");
 
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(IntroActivity.this);
+        dataBaseHelper.insertEvents(events);
+
         Toast.makeText(
                 IntroActivity.this,
-                "Connected successfully. Events loaded: " + events.size(),
+                "Connected successfully. Events saved: " + events.size(),
                 Toast.LENGTH_SHORT
         ).show();
 
-        /*
-         * Next step:
-         * 1. Store events in SQLite database.
-         * 2. Navigate to LoginActivity.
-         */
+        Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
