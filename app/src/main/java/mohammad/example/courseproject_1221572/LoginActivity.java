@@ -1,5 +1,6 @@
 package mohammad.example.courseproject_1221572;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,7 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "Registration will be added in next step", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
