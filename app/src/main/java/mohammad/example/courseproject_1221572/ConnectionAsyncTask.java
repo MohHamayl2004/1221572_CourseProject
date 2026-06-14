@@ -34,14 +34,19 @@ public class ConnectionAsyncTask extends AsyncTask<String, String, String> {
         ((IntroActivity) activity).setProgress(false);
 
         if (s == null) {
-            ((IntroActivity) activity).connectionFailed();
+            ((IntroActivity) activity).connectionFailed("No data returned from URL");
             return;
         }
 
         List<Event> events = EventJsonParser.getObjectFromJson(s);
 
-        if (events == null || events.size() < 10) {
-            ((IntroActivity) activity).connectionFailed();
+        if (events == null) {
+            ((IntroActivity) activity).connectionFailed("JSON parsing failed");
+            return;
+        }
+
+        if (events.size() < 10) {
+            ((IntroActivity) activity).connectionFailed("API must contain at least 10 events");
             return;
         }
 

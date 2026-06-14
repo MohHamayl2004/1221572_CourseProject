@@ -52,12 +52,12 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    public void connectionFailed() {
+    public void connectionFailed(String message) {
         setButtonText("Connect");
         Toast.makeText(
                 IntroActivity.this,
-                "Connection failed. Please try again.",
-                Toast.LENGTH_SHORT
+                "Connection failed: " + message,
+                Toast.LENGTH_LONG
         ).show();
     }
 

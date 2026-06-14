@@ -112,9 +112,10 @@ public class LoginActivity extends AppCompatActivity {
         if (loginSuccess) {
             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-            /*
-             * UserHomeActivity will be added tomorrow.
-             */
+            Intent intent = new Intent(LoginActivity.this, UserHomeActivity.class);
+            startActivity(intent);
+            finish();
+
         } else {
             Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }
