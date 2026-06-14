@@ -17,7 +17,7 @@ public class IntroActivity extends AppCompatActivity {
     ProgressBar progressBarConnect;
 
     private static final String EVENTS_URL =
-            "https://example.com/events.json";
+            "https://raw.githubusercontent.com/MohHamayl2004/1221572_CourseProject/main/app/events.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
