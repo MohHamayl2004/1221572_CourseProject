@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "title": "AI Workshop",
+    "description": "Introduction to artificial intelligence for students.",
+    "category": "Technology",
+    "date": "2026-06-10",
+    "time": "10:00 AM",
+    "location": "Engineering Hall",
+    "seats": 80,
+    "image": "https://example.com/ai.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Cyber Security Seminar",
+    "description": "Learn basic cyber security concepts.",
+    "category": "Security",
+    "date": "2026-06-12",
+    "time": "12:00 PM",
+    "location": "IT Auditorium",
+    "seats": 60,
+    "image": "https://example.com/security.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Android Development Day",
+    "description": "Hands-on Android development session using Java.",
+    "category": "Programming",
+    "date": "2026-06-15",
+    "time": "09:30 AM",
+    "location": "Computer Lab 1",
+    "seats": 40,
+    "image": "https://example.com/android.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Robotics Exhibition",
+    "description": "Student robotics projects and demonstrations.",
+    "category": "Engineering",
+    "date": "2026-06-18",
+    "time": "01:00 PM",
+    "location": "Main Hall",
+    "seats": 100,
+    "image": "https://example.com/robotics.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Entrepreneurship Meetup",
+    "description": "Learn how to start a student project.",
+    "category": "Business",
+    "date": "2026-06-20",
+    "time": "11:00 AM",
+    "location": "Business Hall",
+    "seats": 70,
+    "image": "https://example.com/business.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Data Science Talk",
+    "description": "Introduction to data analysis and machine learning.",
+    "category": "Technology",
+    "date": "2026-06-22",
+    "time": "02:00 PM",
+    "location": "Engineering Hall",
+    "seats": 55,
+    "image": "https://example.com/data.jpg"
+  },
+  {
+    "id": 7,
+    "title": "Career Guidance Session",
+    "description": "Prepare your CV and learn interview skills.",
+    "category": "Career",
+    "date": "2026-06-24",
+    "time": "10:30 AM",
+    "location": "Student Affairs Office",
+    "seats": 50,
+    "image": "https://example.com/career.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Cloud Computing Workshop",
+    "description": "Learn the basics of cloud services.",
+    "category": "Technology",
+    "date": "2026-06-26",
+    "time": "01:30 PM",
+    "location": "Computer Lab 2",
+    "seats": 45,
+    "image": "https://example.com/cloud.jpg"
+  },
+  {
+    "id": 9,
+    "title": "University Sports Day",
+    "description": "Join sports competitions and student activities.",
+    "category": "Sports",
+    "date": "2026-06-28",
+    "time": "09:00 AM",
+    "location": "University Stadium",
+    "seats": 150,
+    "image": "https://example.com/sports.jpg"
+  },
+  {
+    "id": 10,
+    "title": "Graduation Preparation Meeting",
+    "description": "Important meeting for graduation ceremony preparation.",
+    "category": "Important",
+    "date": "2026-07-01",
+    "time": "12:00 PM",
+    "location": "Main Auditorium",
+    "seats": 200,
+    "image": "https://example.com/graduation.jpg"
+  }
+]
