@@ -1,6 +1,7 @@
 package mohammad.example.courseproject_1221572;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,6 +19,14 @@ public class LoginActivity extends AppCompatActivity {
     Button buttonLogin;
     Button buttonSignUp;
 
+    SharedPreferences sharedPreferences;
+
+    private static final String SHARED_PREF_NAME = "SmartEventsPrefs";
+    private static final String KEY_EMAIL = "email";
+
+    private static final String ADMIN_EMAIL = "admin@admin.com";
+    private static final String ADMIN_PASSWORD = "Admin123!";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,23 +38,19 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
 
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+
+        String savedEmail = sharedPreferences.getString(KEY_EMAIL, "");
+
+        if (!savedEmail.equals("")) {
+            editTextEmail.setText(savedEmail);
+            checkBoxRememberMe.setChecked(true);
+        }
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = editTextEmail.getText().toString();
-                String password = editTextPassword.getText().toString();
-
-                if (email.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Password is required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Toast.makeText(LoginActivity.this, "Login will be added in next step", Toast.LENGTH_SHORT).show();
+                loginUser();
             }
         });
 
@@ -57,5 +62,61 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void loginUser() {
+
+        String email = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
+
+        if (email.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!email.contains("@")) {
+            Toast.makeText(LoginActivity.this, "Enter valid email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Password is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (checkBoxRememberMe.isChecked()) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_EMAIL, email);
+            editor.commit();
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove(KEY_EMAIL);
+            editor.commit();
+        }
+
+        if (email.equals(ADMIN_EMAIL) && password.equals(ADMIN_PASSWORD)) {
+            Toast.makeText(LoginActivity.this, "Admin login successful", Toast.LENGTH_SHORT).show();
+
+            /*
+             * AdminHomeActivity will be added later.
+             */
+            return;
+        }
+
+        String encryptedPassword = PasswordUtils.encryptPassword(password);
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(LoginActivity.this);
+
+        boolean loginSuccess = dataBaseHelper.checkUserLogin(email, encryptedPassword);
+
+        if (loginSuccess) {
+            Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+            /*
+             * UserHomeActivity will be added tomorrow.
+             */
+        } else {
+            Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+        }
     }
 }

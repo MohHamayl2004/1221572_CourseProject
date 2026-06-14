@@ -110,8 +110,38 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(RegisterActivity.this, "Registration database will be added next", Toast.LENGTH_SHORT).show();
+        String gender = spinnerGender.getSelectedItem().toString();
+        String major = spinnerMajor.getSelectedItem().toString();
 
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(RegisterActivity.this);
+
+        if (dataBaseHelper.checkEmailExists(email)) {
+            Toast.makeText(RegisterActivity.this, "Email already exists", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String encryptedPassword = PasswordUtils.encryptPassword(password);
+
+        boolean inserted = dataBaseHelper.insertUser(
+                email,
+                firstName,
+                lastName,
+                encryptedPassword,
+                gender,
+                major,
+                phone
+        );
+
+        if (inserted) {
+            Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+        } else {
+            Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+        }
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
