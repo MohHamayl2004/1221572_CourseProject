@@ -43,7 +43,8 @@ public class UserHomeActivity extends AppCompatActivity {
         buttonEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "Events screen will be added next", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserHomeActivity.this, EventsActivity.class);
+                startActivity(intent);
             }
         });
 
