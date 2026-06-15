@@ -2,71 +2,105 @@ package mohammad.example.courseproject_1221572;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class EventsActivity extends AppCompatActivity {
 
-    LinearLayout linearLayoutEvents;
+    RecyclerView recyclerViewEvents;
+    ArrayList<Event> eventsList;
+    EventAdapter eventAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
-        linearLayoutEvents = (LinearLayout) findViewById(R.id.linearLayoutEvents);
+        recyclerViewEvents = (RecyclerView) findViewById(R.id.recyclerViewEvents);
 
-        loadEvents();
+        eventsList = new ArrayList<Event>();
+
+        loadEventsFromDatabase();
+
+        eventAdapter = new EventAdapter(eventsList, new EventAdapter.OnEventClickListener() {
+            @Override
+            public void onEventClick(Event event) {
+                showEventDetails(event);
+            }
+        });
+
+        recyclerViewEvents.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewEvents.setAdapter(eventAdapter);
     }
 
-    private void loadEvents() {
+    private void loadEventsFromDatabase() {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(EventsActivity.this);
 
         Cursor cursor = dataBaseHelper.getAllEvents();
 
-        linearLayoutEvents.removeAllViews();
+        eventsList.clear();
 
         if (cursor.getCount() == 0) {
-            TextView textView = new TextView(EventsActivity.this);
-            textView.setText("No events found. Please connect to API first.");
-            textView.setTextSize(18);
-            linearLayoutEvents.addView(textView);
+            Toast.makeText(
+                    EventsActivity.this,
+                    "No events found. Please connect to API first.",
+                    Toast.LENGTH_SHORT
+            ).show();
+
             cursor.close();
             return;
         }
 
         while (cursor.moveToNext()) {
 
-            String title = cursor.getString(1);
-            String description = cursor.getString(2);
-            String category = cursor.getString(3);
-            String date = cursor.getString(4);
-            String time = cursor.getString(5);
-            String location = cursor.getString(6);
-            int seats = cursor.getInt(7);
+            Event event = new Event();
 
-            TextView textViewEvent = new TextView(EventsActivity.this);
+            event.setId(cursor.getInt(0));
+            event.setTitle(cursor.getString(1));
+            event.setDescription(cursor.getString(2));
+            event.setCategory(cursor.getString(3));
+            event.setDate(cursor.getString(4));
+            event.setTime(cursor.getString(5));
+            event.setLocation(cursor.getString(6));
+            event.setSeats(cursor.getInt(7));
+            event.setImage(cursor.getString(8));
 
-            textViewEvent.setText(
-                    "Title: " + title +
-                            "\nDescription: " + description +
-                            "\nCategory: " + category +
-                            "\nDate: " + date +
-                            "\nTime: " + time +
-                            "\nLocation: " + location +
-                            "\nSeats: " + seats +
-                            "\n\n"
-            );
-
-            textViewEvent.setTextSize(16);
-            textViewEvent.setPadding(10, 10, 10, 10);
-
-            linearLayoutEvents.addView(textViewEvent);
+            eventsList.add(event);
         }
 
         cursor.close();
+    }
+
+    private void showEventDetails(Event event) {
+
+        EventDetailsFragment eventDetailsFragment = new EventDetailsFragment();
+
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("id", event.getId());
+        bundle.putString("title", event.getTitle());
+        bundle.putString("description", event.getDescription());
+        bundle.putString("category", event.getCategory());
+        bundle.putString("date", event.getDate());
+        bundle.putString("time", event.getTime());
+        bundle.putString("location", event.getLocation());
+        bundle.putInt("seats", event.getSeats());
+        bundle.putString("image", event.getImage());
+
+        eventDetailsFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragmentContainerDetails, eventDetailsFragment);
+        fragmentTransaction.commit();
     }
 }

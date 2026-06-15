@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CourseProject_1221572">
         <activity
+            android:name=".EventDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".EventsActivity"
             android:exported="false" />
         <activity
