@@ -19,6 +19,8 @@ public class ConnectionAsyncTask extends AsyncTask<String, String, String> {
 
         ((IntroActivity) activity).setButtonText("Connecting...");
         ((IntroActivity) activity).setProgress(true);
+
+        ((IntroActivity) activity).showMessage("Started connection");
     }
 
     @Override
@@ -37,6 +39,8 @@ public class ConnectionAsyncTask extends AsyncTask<String, String, String> {
             ((IntroActivity) activity).connectionFailed("No data returned from URL");
             return;
         }
+
+        ((IntroActivity) activity).showMessage("Data returned from URL");
 
         List<Event> events = EventJsonParser.getObjectFromJson(s);
 

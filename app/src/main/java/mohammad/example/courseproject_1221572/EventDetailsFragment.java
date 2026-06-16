@@ -22,6 +22,15 @@ public class EventDetailsFragment extends Fragment {
     Button buttonAddFavorite;
     Button buttonReserve;
 
+    int eventId;
+    String title;
+    String description;
+    String category;
+    String date;
+    String time;
+    String location;
+    int seats;
+    String image;
     public EventDetailsFragment() {
     }
 
@@ -44,18 +53,54 @@ public class EventDetailsFragment extends Fragment {
         Bundle bundle = getArguments();
 
         if (bundle != null) {
-            textViewDetailsTitle.setText(bundle.getString("title"));
-            textViewDetailsCategory.setText("Category: " + bundle.getString("category"));
-            textViewDetailsDescription.setText(bundle.getString("description"));
-            textViewDetailsDateTime.setText("Date: " + bundle.getString("date") + " | Time: " + bundle.getString("time"));
-            textViewDetailsLocation.setText("Location: " + bundle.getString("location"));
-            textViewDetailsSeats.setText("Available Seats: " + bundle.getInt("seats"));
+            eventId = bundle.getInt("id");
+            title = bundle.getString("title");
+            description = bundle.getString("description");
+            category = bundle.getString("category");
+            date = bundle.getString("date");
+            time = bundle.getString("time");
+            location = bundle.getString("location");
+            seats = bundle.getInt("seats");
+            image = bundle.getString("image");
+
+            textViewDetailsTitle.setText(title);
+            textViewDetailsCategory.setText("Category: " + category);
+            textViewDetailsDescription.setText(description);
+            textViewDetailsDateTime.setText("Date: " + date + " | Time: " + time);
+            textViewDetailsLocation.setText("Location: " + location);
+            textViewDetailsSeats.setText("Available Seats: " + seats);
         }
 
         buttonAddFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Favorite will be added next", Toast.LENGTH_SHORT).show();
+
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+
+                if (dataBaseHelper.checkFavoriteExists(eventId)) {
+                    Toast.makeText(getActivity(), "Event already in favorites", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Event event = new Event();
+
+                event.setId(eventId);
+                event.setTitle(title);
+                event.setDescription(description);
+                event.setCategory(category);
+                event.setDate(date);
+                event.setTime(time);
+                event.setLocation(location);
+                event.setSeats(seats);
+                event.setImage(image);
+
+                boolean inserted = dataBaseHelper.insertFavorite(event);
+
+                if (inserted) {
+                    Toast.makeText(getActivity(), "Added to favorites", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Failed to add favorite", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

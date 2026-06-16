@@ -63,18 +63,28 @@ public class IntroActivity extends AppCompatActivity {
 
     public void connectionSuccess(List<Event> events) {
         setButtonText("Connected");
+        setProgress(false);
+
+        Toast.makeText(
+                IntroActivity.this,
+                "Before database insert. Events: " + events.size(),
+                Toast.LENGTH_LONG
+        ).show();
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(IntroActivity.this);
         dataBaseHelper.insertEvents(events);
 
         Toast.makeText(
                 IntroActivity.this,
-                "Connected successfully. Events saved: " + events.size(),
-                Toast.LENGTH_SHORT
+                "After database insert",
+                Toast.LENGTH_LONG
         ).show();
 
         Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+    public void showMessage(String message) {
+        Toast.makeText(IntroActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }

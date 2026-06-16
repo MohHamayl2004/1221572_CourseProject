@@ -11,8 +11,7 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SmartEventsDB";
-    private static final int DATABASE_VERSION = 2;
-
+    private static final int DATABASE_VERSION = 3;
     private static final String TABLE_EVENTS = "EVENTS";
     private static final String TABLE_USERS = "USERS";
 
@@ -46,12 +45,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         "MAJOR TEXT, " +
                         "PHONE TEXT)"
         );
+        sqLiteDatabase.execSQL(
+                "CREATE TABLE FAVORITES(" +
+                        "ID INTEGER PRIMARY KEY, " +
+                        "TITLE TEXT, " +
+                        "DESCRIPTION TEXT, " +
+                        "CATEGORY TEXT, " +
+                        "DATE TEXT, " +
+                        "TIME TEXT, " +
+                        "LOCATION TEXT, " +
+                        "SEATS INTEGER, " +
+                        "IMAGE TEXT)"
+        );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS EVENTS");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS USERS");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS FAVORITES");
         onCreate(sqLiteDatabase);
     }
 
@@ -138,5 +150,59 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return exists;
+    }
+    public boolean insertFavorite(Event event) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("ID", event.getId());
+        contentValues.put("TITLE", event.getTitle());
+        contentValues.put("DESCRIPTION", event.getDescription());
+        contentValues.put("CATEGORY", event.getCategory());
+        contentValues.put("DATE", event.getDate());
+        contentValues.put("TIME", event.getTime());
+        contentValues.put("LOCATION", event.getLocation());
+        contentValues.put("SEATS", event.getSeats());
+        contentValues.put("IMAGE", event.getImage());
+
+        long result = sqLiteDatabase.insert("FAVORITES", null, contentValues);
+
+        return result != -1;
+    }
+
+    public boolean checkFavoriteExists(int eventId) {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery(
+                "SELECT * FROM FAVORITES WHERE ID = ?",
+                new String[]{String.valueOf(eventId)}
+        );
+
+        boolean exists = cursor.getCount() > 0;
+
+        cursor.close();
+
+        return exists;
+    }
+
+    public Cursor getAllFavorites() {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        return sqLiteDatabase.rawQuery("SELECT * FROM FAVORITES", null);
+    }
+
+    public void deleteFavorite(int eventId) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        sqLiteDatabase.delete(
+                "FAVORITES",
+                "ID = ?",
+                new String[]{String.valueOf(eventId)}
+        );
     }
 }
