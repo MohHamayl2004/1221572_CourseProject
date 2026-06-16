@@ -11,7 +11,7 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SmartEventsDB";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String TABLE_EVENTS = "EVENTS";
     private static final String TABLE_USERS = "USERS";
 
@@ -57,6 +57,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         "SEATS INTEGER, " +
                         "IMAGE TEXT)"
         );
+        sqLiteDatabase.execSQL(
+                "CREATE TABLE RESERVATIONS(" +
+                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "EVENT_ID INTEGER, " +
+                        "EVENT_TITLE TEXT, " +
+                        "RESERVATION_DATE TEXT, " +
+                        "QUANTITY INTEGER, " +
+                        "TYPE TEXT, " +
+                        "STATUS TEXT)"
+        );
     }
 
     @Override
@@ -64,6 +74,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS EVENTS");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS USERS");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS FAVORITES");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS RESERVATIONS");
         onCreate(sqLiteDatabase);
     }
 
@@ -204,5 +215,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "ID = ?",
                 new String[]{String.valueOf(eventId)}
         );
+    }
+    public boolean insertReservation(int eventId, String eventTitle, String reservationDate,
+                                     int quantity, String type, String status) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("EVENT_ID", eventId);
+        contentValues.put("EVENT_TITLE", eventTitle);
+        contentValues.put("RESERVATION_DATE", reservationDate);
+        contentValues.put("QUANTITY", quantity);
+        contentValues.put("TYPE", type);
+        contentValues.put("STATUS", status);
+
+        long result = sqLiteDatabase.insert("RESERVATIONS", null, contentValues);
+
+        return result != -1;
+    }
+
+    public Cursor getAllReservations() {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        return sqLiteDatabase.rawQuery("SELECT * FROM RESERVATIONS", null);
     }
 }

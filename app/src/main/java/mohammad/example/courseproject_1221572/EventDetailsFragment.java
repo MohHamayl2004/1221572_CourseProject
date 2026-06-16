@@ -1,5 +1,6 @@
 package mohammad.example.courseproject_1221572;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,7 +108,13 @@ public class EventDetailsFragment extends Fragment {
         buttonReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Reservation form will be added next", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), ReservationActivity.class);
+
+                intent.putExtra("eventId", eventId);
+                intent.putExtra("eventTitle", title);
+
+                startActivity(intent);
             }
         });
 
