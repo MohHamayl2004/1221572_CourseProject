@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String SHARED_PREF_NAME = "SmartEventsPrefs";
     private static final String KEY_EMAIL = "email";
+    private static final String KEY_CURRENT_USER = "current_user_email";
 
     private static final String ADMIN_EMAIL = "admin@admin.com";
     private static final String ADMIN_PASSWORD = "Admin123!";
@@ -111,6 +112,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if (loginSuccess) {
             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences.Editor sessionEditor = sharedPreferences.edit();
+            sessionEditor.putString(KEY_CURRENT_USER, email);
+            sessionEditor.commit();
 
             Intent intent = new Intent(LoginActivity.this, UserHomeActivity.class);
             startActivity(intent);

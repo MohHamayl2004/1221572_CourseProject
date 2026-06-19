@@ -75,7 +75,8 @@ public class UserHomeActivity extends AppCompatActivity {
         buttonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "Profile screen will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserHomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -89,6 +90,11 @@ public class UserHomeActivity extends AppCompatActivity {
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getSharedPreferences("SmartEventsPrefs", MODE_PRIVATE)
+                        .edit()
+                        .remove("current_user_email")
+                        .commit();
+
                 Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
