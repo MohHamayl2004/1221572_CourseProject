@@ -83,7 +83,8 @@ public class UserHomeActivity extends AppCompatActivity {
         buttonContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "Contact Us screen will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserHomeActivity.this, ContactUsActivity.class);
+                startActivity(intent);
             }
         });
 

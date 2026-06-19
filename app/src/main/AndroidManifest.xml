@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CourseProject_1221572">
         <activity
+            android:name=".ContactUsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
