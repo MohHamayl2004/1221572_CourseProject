@@ -67,7 +67,8 @@ public class UserHomeActivity extends AppCompatActivity {
         buttonSpecial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "Special Section will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserHomeActivity.this, SpecialSectionActivity.class);
+                startActivity(intent);
             }
         });
 

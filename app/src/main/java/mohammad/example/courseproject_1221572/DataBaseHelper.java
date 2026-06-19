@@ -111,6 +111,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM EVENTS", null);
     }
 
+    public Cursor getSpecialEvents() {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        return sqLiteDatabase.rawQuery("SELECT * FROM EVENTS ORDER BY SEATS DESC", null);
+    }
+
     public boolean insertUser(String email, String firstName, String lastName,
                               String password, String gender, String major, String phone) {
 
