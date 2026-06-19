@@ -51,7 +51,8 @@ public class UserHomeActivity extends AppCompatActivity {
         buttonReservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "My Reservations screen will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserHomeActivity.this, MyReservationsActivity.class);
+                startActivity(intent);
             }
         });
 

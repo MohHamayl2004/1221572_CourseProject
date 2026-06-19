@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CourseProject_1221572">
         <activity
+            android:name=".MyReservationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ReservationActivity"
             android:exported="false" />
         <activity
             android:name=".FavoritesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EventDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".EventsActivity"
