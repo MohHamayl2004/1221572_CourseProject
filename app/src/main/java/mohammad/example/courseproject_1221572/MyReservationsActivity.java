@@ -27,7 +27,10 @@ public class MyReservationsActivity extends AppCompatActivity {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(MyReservationsActivity.this);
 
-        Cursor cursor = dataBaseHelper.getAllReservations();
+        String currentEmail = getSharedPreferences("SmartEventsPrefs", MODE_PRIVATE)
+                .getString("current_user_email", "");
+
+        Cursor cursor = dataBaseHelper.getReservationsByUser(currentEmail);
 
         if (cursor.getCount() == 0) {
             TextView textView = new TextView(MyReservationsActivity.this);

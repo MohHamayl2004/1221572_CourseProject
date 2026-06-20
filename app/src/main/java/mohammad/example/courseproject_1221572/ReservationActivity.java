@@ -84,13 +84,17 @@ public class ReservationActivity extends AppCompatActivity {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(ReservationActivity.this);
 
+        String currentEmail = getSharedPreferences("SmartEventsPrefs", MODE_PRIVATE)
+                .getString("current_user_email", "");
+
         boolean inserted = dataBaseHelper.insertReservation(
                 eventId,
                 eventTitle,
                 reservationDate,
                 quantity,
                 type,
-                "Confirmed"
+                "Confirmed",
+                currentEmail
         );
 
         if (inserted) {

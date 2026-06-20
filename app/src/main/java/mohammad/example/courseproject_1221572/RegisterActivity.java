@@ -129,7 +129,8 @@ public class RegisterActivity extends AppCompatActivity {
                 encryptedPassword,
                 gender,
                 major,
-                phone
+                phone,
+                0
         );
 
         if (inserted) {

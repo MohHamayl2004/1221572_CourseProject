@@ -30,7 +30,10 @@ public class FavoritesActivity extends AppCompatActivity {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(FavoritesActivity.this);
 
-        Cursor cursor = dataBaseHelper.getAllFavorites();
+        String currentEmail = getSharedPreferences("SmartEventsPrefs", MODE_PRIVATE)
+                .getString("current_user_email", "");
+
+        Cursor cursor = dataBaseHelper.getAllFavorites(currentEmail);
 
         if (cursor.getCount() == 0) {
             TextView textView = new TextView(FavoritesActivity.this);
@@ -79,7 +82,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     DataBaseHelper helper = new DataBaseHelper(FavoritesActivity.this);
-                    helper.deleteFavorite(eventId);
+                    helper.deleteFavorite(eventId, currentEmail);
 
                     Toast.makeText(
                             FavoritesActivity.this,

@@ -11,7 +11,7 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "SmartEventsDB";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String TABLE_EVENTS = "EVENTS";
     private static final String TABLE_USERS = "USERS";
 
@@ -43,11 +43,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         "PASSWORD TEXT, " +
                         "GENDER TEXT, " +
                         "MAJOR TEXT, " +
-                        "PHONE TEXT)"
+                        "PHONE TEXT, " +
+                        "IS_ADMIN INTEGER)"
         );
         sqLiteDatabase.execSQL(
                 "CREATE TABLE FAVORITES(" +
-                        "ID INTEGER PRIMARY KEY, " +
+                        "ID INTEGER, " +
                         "TITLE TEXT, " +
                         "DESCRIPTION TEXT, " +
                         "CATEGORY TEXT, " +
@@ -55,7 +56,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         "TIME TEXT, " +
                         "LOCATION TEXT, " +
                         "SEATS INTEGER, " +
-                        "IMAGE TEXT)"
+                        "IMAGE TEXT, " +
+                        "USER_EMAIL TEXT)"
         );
         sqLiteDatabase.execSQL(
                 "CREATE TABLE RESERVATIONS(" +
@@ -65,7 +67,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                         "RESERVATION_DATE TEXT, " +
                         "QUANTITY INTEGER, " +
                         "TYPE TEXT, " +
-                        "STATUS TEXT)"
+                        "STATUS TEXT, " +
+                        "USER_EMAIL TEXT)"
         );
     }
 
@@ -119,7 +122,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertUser(String email, String firstName, String lastName,
-                              String password, String gender, String major, String phone) {
+                              String password, String gender, String major, String phone,
+                              int isAdmin) {
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
@@ -132,10 +136,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("GENDER", gender);
         contentValues.put("MAJOR", major);
         contentValues.put("PHONE", phone);
+        contentValues.put("IS_ADMIN", isAdmin);
 
         long result = sqLiteDatabase.insert(TABLE_USERS, null, contentValues);
 
         return result != -1;
+    }
+
+    public boolean getUserIsAdmin(String email) {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery(
+                "SELECT * FROM USERS WHERE EMAIL = ? AND IS_ADMIN = 1",
+                new String[]{email}
+        );
+
+        boolean isAdmin = cursor.getCount() > 0;
+
+        cursor.close();
+
+        return isAdmin;
     }
 
     public Cursor getUserByEmail(String email) {
@@ -219,7 +240,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return exists;
     }
-    public boolean insertFavorite(Event event) {
+    public boolean insertFavorite(Event event, String userEmail) {
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
@@ -234,19 +255,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("LOCATION", event.getLocation());
         contentValues.put("SEATS", event.getSeats());
         contentValues.put("IMAGE", event.getImage());
+        contentValues.put("USER_EMAIL", userEmail);
 
         long result = sqLiteDatabase.insert("FAVORITES", null, contentValues);
 
         return result != -1;
     }
 
-    public boolean checkFavoriteExists(int eventId) {
+    public boolean checkFavoriteExists(int eventId, String userEmail) {
 
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
         Cursor cursor = sqLiteDatabase.rawQuery(
-                "SELECT * FROM FAVORITES WHERE ID = ?",
-                new String[]{String.valueOf(eventId)}
+                "SELECT * FROM FAVORITES WHERE ID = ? AND USER_EMAIL = ?",
+                new String[]{String.valueOf(eventId), userEmail}
         );
 
         boolean exists = cursor.getCount() > 0;
@@ -256,25 +278,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    public Cursor getAllFavorites() {
+    public Cursor getAllFavorites(String userEmail) {
 
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
-        return sqLiteDatabase.rawQuery("SELECT * FROM FAVORITES", null);
+        return sqLiteDatabase.rawQuery(
+                "SELECT * FROM FAVORITES WHERE USER_EMAIL = ?",
+                new String[]{userEmail}
+        );
     }
 
-    public void deleteFavorite(int eventId) {
+    public void deleteFavorite(int eventId, String userEmail) {
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         sqLiteDatabase.delete(
                 "FAVORITES",
-                "ID = ?",
-                new String[]{String.valueOf(eventId)}
+                "ID = ? AND USER_EMAIL = ?",
+                new String[]{String.valueOf(eventId), userEmail}
         );
     }
     public boolean insertReservation(int eventId, String eventTitle, String reservationDate,
-                                     int quantity, String type, String status) {
+                                     int quantity, String type, String status, String userEmail) {
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
@@ -286,10 +311,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("QUANTITY", quantity);
         contentValues.put("TYPE", type);
         contentValues.put("STATUS", status);
+        contentValues.put("USER_EMAIL", userEmail);
 
         long result = sqLiteDatabase.insert("RESERVATIONS", null, contentValues);
 
         return result != -1;
+    }
+
+    public Cursor getReservationsByUser(String userEmail) {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        return sqLiteDatabase.rawQuery(
+                "SELECT * FROM RESERVATIONS WHERE USER_EMAIL = ?",
+                new String[]{userEmail}
+        );
     }
 
     public Cursor getAllReservations() {

@@ -78,7 +78,11 @@ public class EventDetailsFragment extends Fragment {
 
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
 
-                if (dataBaseHelper.checkFavoriteExists(eventId)) {
+                String currentEmail = getActivity()
+                        .getSharedPreferences("SmartEventsPrefs", getActivity().MODE_PRIVATE)
+                        .getString("current_user_email", "");
+
+                if (dataBaseHelper.checkFavoriteExists(eventId, currentEmail)) {
                     Toast.makeText(getActivity(), "Event already in favorites", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -95,7 +99,7 @@ public class EventDetailsFragment extends Fragment {
                 event.setSeats(seats);
                 event.setImage(image);
 
-                boolean inserted = dataBaseHelper.insertFavorite(event);
+                boolean inserted = dataBaseHelper.insertFavorite(event, currentEmail);
 
                 if (inserted) {
                     Toast.makeText(getActivity(), "Added to favorites", Toast.LENGTH_SHORT).show();

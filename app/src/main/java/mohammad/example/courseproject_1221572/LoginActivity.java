@@ -113,6 +113,13 @@ public class LoginActivity extends AppCompatActivity {
         if (loginSuccess) {
             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
+            if (dataBaseHelper.getUserIsAdmin(email)) {
+                Intent intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+
             SharedPreferences.Editor sessionEditor = sharedPreferences.edit();
             sessionEditor.putString(KEY_CURRENT_USER, email);
             sessionEditor.commit();
