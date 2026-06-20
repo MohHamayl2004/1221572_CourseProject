@@ -98,9 +98,9 @@ public class LoginActivity extends AppCompatActivity {
         if (email.equals(ADMIN_EMAIL) && password.equals(ADMIN_PASSWORD)) {
             Toast.makeText(LoginActivity.this, "Admin login successful", Toast.LENGTH_SHORT).show();
 
-            /*
-             * AdminHomeActivity will be added later.
-             */
+            Intent intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+            startActivity(intent);
+            finish();
             return;
         }
 
