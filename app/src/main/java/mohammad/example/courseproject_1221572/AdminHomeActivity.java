@@ -38,7 +38,8 @@ public class AdminHomeActivity extends AppCompatActivity {
         buttonAddAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AdminHomeActivity.this, "Add Admin will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminHomeActivity.this, AddAdminActivity.class);
+                startActivity(intent);
             }
         });
 
