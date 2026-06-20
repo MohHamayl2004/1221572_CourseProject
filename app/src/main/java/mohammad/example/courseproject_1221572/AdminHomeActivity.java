@@ -30,7 +30,8 @@ public class AdminHomeActivity extends AppCompatActivity {
         buttonManageUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AdminHomeActivity.this, "Manage Users will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminHomeActivity.this, AdminUsersActivity.class);
+                startActivity(intent);
             }
         });
 

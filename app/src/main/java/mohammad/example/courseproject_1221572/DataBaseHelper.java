@@ -186,6 +186,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    public Cursor getAllUsers() {
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        return sqLiteDatabase.rawQuery("SELECT * FROM USERS", null);
+    }
+
+    public void deleteUser(String email) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        sqLiteDatabase.delete(
+                TABLE_USERS,
+                "EMAIL = ?",
+                new String[]{email}
+        );
+    }
+
     public boolean checkEmailExists(String email) {
 
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
