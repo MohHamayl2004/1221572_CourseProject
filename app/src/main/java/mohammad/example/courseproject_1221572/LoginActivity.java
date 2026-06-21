@@ -8,6 +8,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
         checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+
+        Animation buttonAnimation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.button_scale);
+        buttonLogin.startAnimation(buttonAnimation);
 
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 

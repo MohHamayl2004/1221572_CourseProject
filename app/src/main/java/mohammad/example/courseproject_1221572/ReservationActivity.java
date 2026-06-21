@@ -68,7 +68,14 @@ public class ReservationActivity extends AppCompatActivity {
             return;
         }
 
-        int quantity = Integer.parseInt(quantityText);
+        int quantity;
+
+        try {
+            quantity = Integer.parseInt(quantityText);
+        } catch (NumberFormatException e) {
+            Toast.makeText(ReservationActivity.this, "Enter a valid quantity", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (quantity <= 0) {
             Toast.makeText(ReservationActivity.this, "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();

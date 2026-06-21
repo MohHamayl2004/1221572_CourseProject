@@ -12,8 +12,8 @@ android {
 
     defaultConfig {
         applicationId = "mohammad.example.courseproject_1221572"
-        minSdk = 26
-        targetSdk = 36
+        minSdk = 28
+        targetSdk = 28
         versionCode = 1
         versionName = "1.0"
 
