@@ -46,7 +46,8 @@ public class AdminHomeActivity extends AppCompatActivity {
         buttonManageEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AdminHomeActivity.this, "Manage Events will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminHomeActivity.this, AdminEventsActivity.class);
+                startActivity(intent);
             }
         });
 

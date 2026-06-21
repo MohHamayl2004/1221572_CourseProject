@@ -114,6 +114,63 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM EVENTS", null);
     }
 
+    public boolean insertSingleEvent(Event event) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("ID", event.getId());
+        contentValues.put("TITLE", event.getTitle());
+        contentValues.put("DESCRIPTION", event.getDescription());
+        contentValues.put("CATEGORY", event.getCategory());
+        contentValues.put("DATE", event.getDate());
+        contentValues.put("TIME", event.getTime());
+        contentValues.put("LOCATION", event.getLocation());
+        contentValues.put("SEATS", event.getSeats());
+        contentValues.put("IMAGE", event.getImage());
+
+        long result = sqLiteDatabase.insert(TABLE_EVENTS, null, contentValues);
+
+        return result != -1;
+    }
+
+    public boolean updateEvent(Event event) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("TITLE", event.getTitle());
+        contentValues.put("DESCRIPTION", event.getDescription());
+        contentValues.put("CATEGORY", event.getCategory());
+        contentValues.put("DATE", event.getDate());
+        contentValues.put("TIME", event.getTime());
+        contentValues.put("LOCATION", event.getLocation());
+        contentValues.put("SEATS", event.getSeats());
+        contentValues.put("IMAGE", event.getImage());
+
+        int rows = sqLiteDatabase.update(
+                TABLE_EVENTS,
+                contentValues,
+                "ID = ?",
+                new String[]{String.valueOf(event.getId())}
+        );
+
+        return rows > 0;
+    }
+
+    public void deleteEvent(int id) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        sqLiteDatabase.delete(
+                TABLE_EVENTS,
+                "ID = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
+
     public Cursor getSpecialEvents() {
 
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
