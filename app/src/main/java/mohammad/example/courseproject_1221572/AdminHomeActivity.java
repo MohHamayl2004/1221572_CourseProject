@@ -54,7 +54,8 @@ public class AdminHomeActivity extends AppCompatActivity {
         buttonViewReservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AdminHomeActivity.this, "View Reservations will be added later", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminHomeActivity.this, AdminReservationsActivity.class);
+                startActivity(intent);
             }
         });
 
