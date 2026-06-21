@@ -2,103 +2,74 @@ package mohammad.example.courseproject_1221572;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.core.view.GravityCompat;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class UserHomeActivity extends AppCompatActivity {
 
-    Button buttonHome;
-    Button buttonEvents;
-    Button buttonReservations;
-    Button buttonFavorites;
-    Button buttonSpecial;
-    Button buttonProfile;
-    Button buttonContact;
-    Button buttonLogout;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_home);
 
-        buttonHome = (Button) findViewById(R.id.buttonHome);
-        buttonEvents = (Button) findViewById(R.id.buttonEvents);
-        buttonReservations = (Button) findViewById(R.id.buttonReservations);
-        buttonFavorites = (Button) findViewById(R.id.buttonFavorites);
-        buttonSpecial = (Button) findViewById(R.id.buttonSpecial);
-        buttonProfile = (Button) findViewById(R.id.buttonProfile);
-        buttonContact = (Button) findViewById(R.id.buttonContact);
-        buttonLogout = (Button) findViewById(R.id.buttonLogout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        buttonHome.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.app_name, R.string.app_name
+        );
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "Home", Toast.LENGTH_SHORT).show();
-            }
-        });
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        buttonEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, EventsActivity.class);
-                startActivity(intent);
-            }
-        });
+                int id = item.getItemId();
 
-        buttonReservations.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, MyReservationsActivity.class);
-                startActivity(intent);
-            }
-        });
+                if (id == R.id.nav_home) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else if (id == R.id.nav_events) {
+                    startActivity(new Intent(UserHomeActivity.this, EventsActivity.class));
+                } else if (id == R.id.nav_reservations) {
+                    startActivity(new Intent(UserHomeActivity.this, MyReservationsActivity.class));
+                } else if (id == R.id.nav_favorites) {
+                    startActivity(new Intent(UserHomeActivity.this, FavoritesActivity.class));
+                } else if (id == R.id.nav_special) {
+                    startActivity(new Intent(UserHomeActivity.this, SpecialSectionActivity.class));
+                } else if (id == R.id.nav_profile) {
+                    startActivity(new Intent(UserHomeActivity.this, ProfileActivity.class));
+                } else if (id == R.id.nav_contact) {
+                    startActivity(new Intent(UserHomeActivity.this, ContactUsActivity.class));
+                } else if (id == R.id.nav_logout) {
+                    getSharedPreferences("SmartEventsPrefs", MODE_PRIVATE)
+                            .edit()
+                            .remove("current_user_email")
+                            .commit();
 
-        buttonFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, FavoritesActivity.class);
-                startActivity(intent);
-            }
-        });
+                    Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
-        buttonSpecial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, SpecialSectionActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        buttonProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        buttonContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, ContactUsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSharedPreferences("SmartEventsPrefs", MODE_PRIVATE)
-                        .edit()
-                        .remove("current_user_email")
-                        .commit();
-
-                Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
             }
         });
     }
