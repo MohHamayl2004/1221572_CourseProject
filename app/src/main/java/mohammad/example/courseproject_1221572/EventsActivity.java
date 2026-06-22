@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class EventsActivity extends AppCompatActivity {
     RecyclerView recyclerViewEvents;
     EditText editTextSearch;
     Spinner spinnerCategoryFilter;
-
+    FrameLayout fragmentContainerDetails;
     ArrayList<Event> allEventsList;
     ArrayList<Event> eventsList;
     EventAdapter eventAdapter;
@@ -37,7 +38,7 @@ public class EventsActivity extends AppCompatActivity {
         recyclerViewEvents = (RecyclerView) findViewById(R.id.recyclerViewEvents);
         editTextSearch = (EditText) findViewById(R.id.editTextSearch);
         spinnerCategoryFilter = (Spinner) findViewById(R.id.spinnerCategoryFilter);
-
+        fragmentContainerDetails = (FrameLayout) findViewById(R.id.fragmentContainerDetails);
         allEventsList = new ArrayList<Event>();
         eventsList = new ArrayList<Event>();
 
@@ -186,6 +187,11 @@ public class EventsActivity extends AppCompatActivity {
     }
 
     private void showEventDetails(Event event) {
+
+        recyclerViewEvents.setVisibility(View.GONE);
+        editTextSearch.setVisibility(View.GONE);
+        spinnerCategoryFilter.setVisibility(View.GONE);
+        fragmentContainerDetails.setVisibility(View.VISIBLE);
 
         EventDetailsFragment eventDetailsFragment = new EventDetailsFragment();
 

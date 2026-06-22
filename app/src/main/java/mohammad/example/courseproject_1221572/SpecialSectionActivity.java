@@ -2,8 +2,9 @@ package mohammad.example.courseproject_1221572;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.Toast;
-
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +18,8 @@ public class SpecialSectionActivity extends AppCompatActivity {
     RecyclerView recyclerViewSpecial;
     ArrayList<Event> specialList;
     EventAdapter eventAdapter;
+
+    FrameLayout fragmentContainerSpecial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,9 @@ public class SpecialSectionActivity extends AppCompatActivity {
     }
 
     private void showEventDetails(Event event) {
+
+        recyclerViewSpecial.setVisibility(View.GONE);
+        fragmentContainerSpecial.setVisibility(View.VISIBLE);
 
         EventDetailsFragment eventDetailsFragment = new EventDetailsFragment();
 

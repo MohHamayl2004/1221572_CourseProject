@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/imageViewLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="239dp"
+        android:layout_height="203dp"
+        android:src="@drawable/images" />
 
     <TextView
         android:id="@+id/textViewSplashTitle"
